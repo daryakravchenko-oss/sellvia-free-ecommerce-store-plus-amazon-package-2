@@ -273,10 +273,11 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   top: calc(38% - 30px);
   object-fit: contain;
   opacity: 0;
+  /* L1 — left portrait, shoulder: in 1s, out 3s */
   animation:
     amz-in 0.6s ease 1s both,
     float-card 6s ease-in-out -2s infinite,
-    amz-out 0.6s ease 2s forwards;
+    amz-out 0.6s ease 3s forwards;
 }
 @keyframes amz-in {
   from { opacity: 0; transform: translateY(20px); }
@@ -289,10 +290,33 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 .hp-amz-right {
   left: auto;
   right: 20%;
+  /* R1 — right portrait, shoulder: in 7s (1s after L2), out 9s */
   animation:
-    amz-in 0.6s ease 1s both,
-    float-card 6s ease-in-out -3s infinite,
-    amz-out 0.6s ease 2s forwards;
+    amz-in 0.6s ease 7s both,
+    float-card 6s ease-in-out 7s infinite,
+    amz-out 0.6s ease 9s forwards;
+}
+/* Second-appearance badges near each face. Timing: first wave L1+R2 (1s apart),
+   second wave L2+R1 (1s apart). */
+.hp-amz-2 {
+  /* L2 default — left portrait, above-right of head: in 6s, out 8s */
+  animation:
+    amz-in 0.6s ease 6s both,
+    float-card 6s ease-in-out 6s infinite,
+    amz-out 0.6s ease 8s forwards;
+}
+.hero-portrait-left .hp-amz-2 {
+  left: calc(55% + 50px);
+  top: calc(4% - 10px);
+}
+.hero-portrait-right .hp-amz-2 {
+  left: calc(30% - 50px);
+  top: calc(4% + 10px);
+  /* R2 — right portrait, above-left of head: in 2s (1s after L1), out 4s */
+  animation:
+    amz-in 0.6s ease 2s both,
+    float-card 6s ease-in-out 2s infinite,
+    amz-out 0.6s ease 4s forwards;
 }
 .hero-portrait-left {
   left: calc(3% - 50px);
@@ -321,7 +345,7 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 }
 .hero-float-left {
   left: calc(3% + 330px);
-  top: 38%;
+  top: calc(38% + 100px);
   opacity: 0;
   animation:
     float-card 7s ease-in-out infinite,
@@ -339,7 +363,7 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 .hero-float-right {
   right: calc(5% + 50px);
   top: 50%;
-  transform: translateY(calc(-50% - 120px + var(--fade-y)));
+  transform: translateY(calc(-50% + 130px + var(--fade-y)));
   opacity: 0;
   animation:
     float-card 8s ease-in-out -3s infinite,
@@ -427,7 +451,7 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   display: block;
   overflow: visible;
 }
-.hf-card-dash { width: 240px; }
+.hf-card-dash { width: fit-content; }
 .hf-dash-head {
   display: flex;
   justify-content: space-between;
@@ -442,6 +466,11 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   padding: 3px 8px;
   border-radius: 8px;
   letter-spacing: 0.02em;
+}
+.hf-dash-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .hf-dash-val {
   font-size: 30px;
@@ -465,7 +494,7 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   height: 54px;
 }
 .hf-bar {
-  flex: 1;
+  flex: 0 0 28px;
   height: var(--h, 40%);
   background: linear-gradient(to top, rgba(248, 165, 77, 0.3), #F8A54D);
   border-radius: 3px 3px 2px 2px;
@@ -857,16 +886,16 @@ section { padding: 120px 24px; }
 @media(max-width:760px) { .prod-card { flex: 0 0 220px; } }
 
 /* ════ SECTION 3: HOW IT WORKS ════ */
-.how-sec { background: var(--c-lightbg); }
+.how-sec { background: #fff; }
 .how-steps {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0;
   margin-top: 72px;
-  background: #f5f5f7;
+  background: #fff;
 }
 .how-step {
-  background: #f5f5f7;
+  background: #fff;
   padding: 52px 44px 48px;
   position: relative;
 }
@@ -1716,6 +1745,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="hero-portrait hero-portrait-left" aria-hidden="true">
     <img src="img/Hero/1_man.webp" alt="">
     <img class="hp-amz" src="img/Hero/Amazon_round.webp" alt="">
+    <img class="hp-amz hp-amz-2" src="img/Hero/Amazon_round.webp" alt="">
   </div>
 
   <!-- LEFT: glass card with mini stats snapshot -->
@@ -1739,6 +1769,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="hero-portrait hero-portrait-right" aria-hidden="true">
     <img src="img/Hero/1_woman.webp" alt="">
     <img class="hp-amz hp-amz-right" src="img/Hero/Amazon_round.webp" alt="">
+    <img class="hp-amz hp-amz-2" src="img/Hero/Amazon_round.webp" alt="">
   </div>
 
   <!-- RIGHT: dashboard card with chart -->
@@ -1746,12 +1777,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="hf-card hf-card-dash">
       <div class="hf-dash-head">
         <span class="hf-snap-lbl">Your Amazon store</span>
+      </div>
+      <div class="hf-dash-row">
+        <div class="hf-dash-val">$6,924</div>
         <span class="hf-badge">↑ 43%</span>
       </div>
-      <div class="hf-dash-val">$6,924</div>
       <div class="hf-dash-sub">earned this month</div>
       <div class="hf-chart">
-        <span class="hf-bar" style="--h: 22%"></span>
         <span class="hf-bar" style="--h: 38%"></span>
         <span class="hf-bar" style="--h: 32%"></span>
         <span class="hf-bar" style="--h: 58%"></span>
@@ -1812,245 +1844,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 </div>
-
-<!-- ═══ AWARDS (moved up for early social proof) ═══ -->
-<section class="awards-sec">
-  <div class="sec-in">
-    <div class="appear">
-      <div class="sec-label">Recognition</div>
-      <h2 class="sec-title-xl on-light">Award-winning quality.</h2>
-      <p class="sec-body" style="max-width:520px;margin:0 auto">Here's just a part of the industry rewards our turnkey stores and ecommerce platform have achieved.</p>
-    </div>
-    <div class="awards-grid">
-      <div class="award-card appear d1">
-        <img class="award-logo" src="img/Awards/1_logo_m.webp" alt="Hermes Awards">
-        <h3>Hermes Awards</h3>
-        <p>Best IT Product 2025–2026</p>
-        <span class="award-medal gold">Gold Winner</span>
-      </div>
-      <div class="award-card appear d2">
-        <img class="award-logo" src="img/Awards/2_logo_m.webp?v=2" alt="MarCom Awards">
-        <h3>MarCom Awards</h3>
-        <p>Best Ecommerce Platform</p>
-        <span class="award-medal plat">Platinum Winner</span>
-      </div>
-      <div class="award-card appear d3">
-        <img class="award-logo" src="img/Awards/3_logo_m.webp" alt="dotCOMM Awards">
-        <h3>dotCOMM Awards</h3>
-        <p>Best Ecommerce Ecosystem</p>
-        <span class="award-medal gold">Gold Winner</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ RATINGS (moved up for early social proof) ═══ -->
-<div class="ratings-sec">
-  <div class="sec-label" style="color:rgba(255,255,255,0.35);text-align:center;margin-bottom:24px">FEATURED ON:</div>
-  <div class="featured-marquee">
-    <div class="featured-strip">
-      <img src="img/featured/forbes.svg" alt="Forbes">
-      <img src="img/featured/entrepreneur.svg" alt="Entrepreneur">
-      <img src="img/featured/inc.svg" alt="Inc.">
-      <img src="img/featured/nbc.svg" alt="NBC">
-      <img src="img/featured/business-com.svg" alt="Business.com">
-      <img src="img/featured/fox-news.svg" alt="Fox News">
-      <img src="img/featured/forbes.svg" alt="Forbes">
-      <img src="img/featured/entrepreneur.svg" alt="Entrepreneur">
-      <img src="img/featured/inc.svg" alt="Inc.">
-      <img src="img/featured/nbc.svg" alt="NBC">
-      <img src="img/featured/business-com.svg" alt="Business.com">
-      <img src="img/featured/fox-news.svg" alt="Fox News">
-      <img src="img/featured/forbes.svg" alt="Forbes">
-      <img src="img/featured/entrepreneur.svg" alt="Entrepreneur">
-      <img src="img/featured/inc.svg" alt="Inc.">
-      <img src="img/featured/nbc.svg" alt="NBC">
-      <img src="img/featured/business-com.svg" alt="Business.com">
-      <img src="img/featured/fox-news.svg" alt="Fox News">
-      <img src="img/featured/forbes.svg" alt="Forbes">
-      <img src="img/featured/entrepreneur.svg" alt="Entrepreneur">
-      <img src="img/featured/inc.svg" alt="Inc.">
-      <img src="img/featured/nbc.svg" alt="NBC">
-      <img src="img/featured/business-com.svg" alt="Business.com">
-      <img src="img/featured/fox-news.svg" alt="Fox News">
-    </div>
-  </div>
-  <div class="ratings-inner">
-    <div class="rat-card appear d1"><img class="rat-logo" src="img/ratings/sitejabber.svg" alt="Sitejabber"><div class="rat-stars">★★★★★</div><div class="rat-score">4.8</div><div class="rat-count">824 reviews</div></div>
-    <div class="rat-card appear d2"><img class="rat-logo" src="img/ratings/trustpilot.svg" alt="Trustpilot"><div class="rat-stars">★★★★★</div><div class="rat-score">4.6</div><div class="rat-count">1,115 reviews</div></div>
-    <div class="rat-card appear d3"><img class="rat-logo" src="img/ratings/facebook.svg" alt="Facebook"><div class="rat-stars">★★★★★</div><div class="rat-score">96%</div><div class="rat-count">510 reviews</div></div>
-    <div class="rat-card appear d4"><img class="rat-logo" src="img/ratings/g2.svg" alt="G2"><div class="rat-stars">★★★★★</div><div class="rat-score">4.7</div><div class="rat-count">249 reviews</div></div>
-  </div>
-</div>
-
-<!-- ═══ WHY ═══ -->
-<section class="why-sec" id="why">
-  <div class="sec-in">
-    <div class="appear" style="text-align:center">
-      <div class="sec-label">Why thousands choose us</div>
-      <h2 class="sec-title-xl on-light">Everything you need.<br>Nothing you don't.</h2>
-      <p class="sec-body" style="max-width:540px;margin:0 auto">Your business launch is organized by us – no inventory, no upfront costs, no shipping headaches.</p>
-    </div>
-    <div class="why-grid">
-      <div class="why-card appear d1">
-        <div class="why-icon">
-          <img src="img/icons/shield-tick.svg" alt="check">
-        </div>
-        <h3>100% hassle-free</h3>
-        <p>We build, load, and launch your store for you. You focus on earning – we take care of the rest.</p>
-      </div>
-      <div class="why-card appear d2">
-        <div class="why-icon">
-          <img src="img/icons/user.svg" alt="user">
-        </div>
-        <h3>Start with zero experience</h3>
-        <p>Your store will bring profits on autopilot and the management is totally beginner friendly.</p>
-      </div>
-      <div class="why-card appear d3">
-        <div class="why-icon">
-          <img src="img/icons/trend-up.svg" alt="trend">
-        </div>
-        <h3>Financial freedom</h3>
-        <p>You get a stable source of income and a brilliant opportunity to change your life for the better.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ WHAT WILL I SELL ═══ -->
-<section class="sell-sec" id="sell">
-  <div class="sec-in-wide">
-    <div class="appear" style="text-align:center">
-      <div class="sec-label" style="color:var(--c-amber)">Your product catalog</div>
-      <h2 class="sec-title-xl" style="color:#fff">What will I sell?</h2>
-      <p class="sec-body" style="color:rgba(255,255,255,0.6);max-width:500px;margin:0 auto">Your store comes pre-loaded with 100+ best-selling AI toolkits! Check some examples.</p>
-    </div>
-  </div>
-
-  <div class="wix-carousel appear d2">
-    <div class="wix-track">
-      <div class="wix-card"><img src="img/products/0-discover-your-next-big-business-idea.webp" alt="Discover Your Next Big Business Idea"></div>
-      <div class="wix-card"><img src="img/products/1-critical-thinking-amp-problem-solving-ebook.webp" alt="Critical Thinking & Problem Solving eBook"></div>
-      <div class="wix-card"><img src="img/products/2-5-days-to-unshakable-dating-confidence.webp" alt="5 Days to Unshakable Dating Confidence"></div>
-      <div class="wix-card"><img src="img/products/3-top-10-must-see-u-s-national-parks-fast-facts.webp" alt="Top 10 Must-See U.S. National Parks + Fast Facts"></div>
-      <div class="wix-card"><img src="img/products/4-first-time-parent-survival-guide.webp" alt="First-Time Parent Survival Guide"></div>
-      <div class="wix-card"><img src="img/products/5-sleep-reset-guided-audio-course-for-restful-nights.webp" alt="Sleep Reset: Guided Audio Course for Restful Nights"></div>
-      <div class="wix-card"><img src="img/products/6-pet-travel-essentials-checklist-for-safe-trips.webp" alt="Pet Travel Essentials Checklist for Safe Trips"></div>
-      <div class="wix-card"><img src="img/products/7-the-empowered-budgeting-toolkit.webp" alt="The Empowered Budgeting Toolkit"></div>
-      <div class="wix-card"><img src="img/products/8-healthy-meal-plan-amp-recipe-collection.webp" alt="Healthy Meal Plan & Recipe Collection"></div>
-      <div class="wix-card"><img src="img/products/9-step-by-step-career-development-guide.webp" alt="Step-by-Step Career Development Guide"></div>
-      <!-- Duplicate for seamless loop -->
-      <div class="wix-card"><img src="img/products/0-discover-your-next-big-business-idea.webp" alt="Discover Your Next Big Business Idea"></div>
-      <div class="wix-card"><img src="img/products/1-critical-thinking-amp-problem-solving-ebook.webp" alt="Critical Thinking & Problem Solving eBook"></div>
-      <div class="wix-card"><img src="img/products/2-5-days-to-unshakable-dating-confidence.webp" alt="5 Days to Unshakable Dating Confidence"></div>
-      <div class="wix-card"><img src="img/products/3-top-10-must-see-u-s-national-parks-fast-facts.webp" alt="Top 10 Must-See U.S. National Parks + Fast Facts"></div>
-      <div class="wix-card"><img src="img/products/4-first-time-parent-survival-guide.webp" alt="First-Time Parent Survival Guide"></div>
-      <div class="wix-card"><img src="img/products/5-sleep-reset-guided-audio-course-for-restful-nights.webp" alt="Sleep Reset: Guided Audio Course for Restful Nights"></div>
-      <div class="wix-card"><img src="img/products/6-pet-travel-essentials-checklist-for-safe-trips.webp" alt="Pet Travel Essentials Checklist for Safe Trips"></div>
-      <div class="wix-card"><img src="img/products/7-the-empowered-budgeting-toolkit.webp" alt="The Empowered Budgeting Toolkit"></div>
-      <div class="wix-card"><img src="img/products/8-healthy-meal-plan-amp-recipe-collection.webp" alt="Healthy Meal Plan & Recipe Collection"></div>
-      <div class="wix-card"><img src="img/products/9-step-by-step-career-development-guide.webp" alt="Step-by-Step Career Development Guide"></div>
-    </div>
-  </div>
-
-  <div style="text-align:center;margin-top:48px;" class="appear">
-    <a href="https://sellvia.com/checkout/?product=custom&type_custom=free_basic_hosting" class="btn btn-filled">Get my free store</a>
-    <p style="margin-top:14px;font-size:12px;color:rgba(255,255,255,0.35)">All products are pre-loaded in your store – no extra cost</p>
-  </div>
-</section>
-
-
-<!-- ═══ HOW IT WORKS ═══ -->
-<section class="how-sec">
-  <div class="sec-in">
-    <div class="appear" style="text-align:center">
-      <div class="sec-label">How it works</div>
-      <h2 class="sec-title-xl on-light">From zero to sale<br>in 3 simple steps.</h2>
-      <p class="sec-body" style="max-width:540px;margin:0 auto">No experience, no tech skills, no inventory needed.</p>
-    </div>
-    <div class="how-steps">
-      <div class="how-step appear d1">
-        <div class="how-step-num">01</div>
-        <h3>We build your store</h3>
-        <p>Sign up free and we immediately set up a complete online store for you – loaded with digital products people actually buy. Your store is live in minutes, not months.</p>
-        <span class="how-step-tag">Done for you</span>
-      </div>
-      <div class="how-step appear d2">
-        <div class="how-step-num">02</div>
-        <h3>Turn on your ads</h3>
-        <p>With one click, your built-in ad system starts promoting your products. A free $40 ad coupon is included so your first campaign costs you nothing.</p>
-        <span class="how-step-tag">One click</span>
-      </div>
-      <div class="how-step appear d3">
-        <div class="how-step-num">03</div>
-        <h3>Get paid, keep 50–70%</h3>
-        <p>When a customer buys from your store, you keep 50–70% of every sale as your profit. Products deliver instantly – no shipping, no hassle from your side.</p>
-        <span class="how-step-tag">Your profit</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ WHAT DO I GET ═══ -->
-<section class="get-sec" id="get">
-  <div class="glow-orb" id="glowOrb"></div>
-  <div class="sec-in">
-    <div class="appear" style="text-align:center">
-      <div class="sec-label" style="color:var(--c-amber)">Included</div>
-      <h2 class="sec-title-xl" style="color:#fff">What do I get for free?</h2>
-      <p style="font-size:19px;color:rgba(255,255,255,0.55);line-height:1.5;max-width:500px;margin:0 auto">Everything you need to sell online and succeed!</p>
-    </div>
-    <div class="get-grid">
-      <div class="get-card appear d1">
-        <div class="get-icon">
-          <img src="img/icons/shop.svg" alt="store">
-        </div>
-        <h3>Top-notch online store</h3>
-        <p>A fully hosted standalone ecommerce website, domain name &amp; SSL included.</p>
-      </div>
-      <div class="get-card appear d2">
-        <div class="get-icon">
-          <img src="img/icons/designtools.svg" alt="design">
-        </div>
-        <h3>Professional design</h3>
-        <p>Switchable, mobile-friendly design with vibrant visuals that turn shoppers into buyers.</p>
-      </div>
-      <div class="get-card appear d3">
-        <div class="get-icon">
-          <img src="img/icons/shopping-bag.svg" alt="products">
-        </div>
-        <h3>Thousands of best-sellers</h3>
-        <p>Access to handpicked collections of the trendiest items. Add as many products as you like.</p>
-      </div>
-      <div class="get-card appear d4">
-        <div class="get-icon">
-          <img src="img/icons/card.svg" alt="payment">
-        </div>
-        <h3>Payment system</h3>
-        <p>Your store is fully ready to accept payments through credit cards, debit cards, PayPal, and more.</p>
-      </div>
-      <div class="get-card appear d5">
-        <div class="get-icon">
-          <img src="img/icons/profile-tick.svg" alt="manager">
-        </div>
-        <h3>Personal manager</h3>
-        <p>Your dedicated manager will guide you through all the steps of your business launch and growth.</p>
-      </div>
-      <div class="get-card appear d6">
-        <div class="get-icon">
-          <img src="img/icons/24-support.svg" alt="support">
-        </div>
-        <h3>24/7 tech support</h3>
-        <p>Feel free to contact our friendly support team whenever you have any technical issues.</p>
-      </div>
-    </div>
-    <div style="text-align:center;margin-top:56px" class="appear">
-      <a href="https://sellvia.com/checkout/?product=custom&type_custom=free_basic_hosting" class="btn btn-filled" id="getCtaBtn">Get my free store</a>
-      <p style="margin-top:12px;font-size:13px;color:rgba(255,255,255,0.3)">Get started in less than 60 seconds • Cancel anytime</p>
-    </div>
-  </div>
-</section>
-
 <!-- ═══ BONUS ═══ -->
 <style>
 /* bonus-section fits naturally as a full-width page section */
@@ -2522,6 +2315,246 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 })();
 </script>
+
+
+<!-- ═══ WHAT DO I GET ═══ -->
+<section class="get-sec" id="get">
+  <div class="glow-orb" id="glowOrb"></div>
+  <div class="sec-in">
+    <div class="appear" style="text-align:center">
+      <div class="sec-label" style="color:var(--c-amber)">Included</div>
+      <h2 class="sec-title-xl" style="color:#fff">What do I get for free?</h2>
+      <p style="font-size:19px;color:rgba(255,255,255,0.55);line-height:1.5;max-width:500px;margin:0 auto">Everything you need to sell online and succeed!</p>
+    </div>
+    <div class="get-grid">
+      <div class="get-card appear d1">
+        <div class="get-icon">
+          <img src="img/icons/shop.svg" alt="store">
+        </div>
+        <h3>Top-notch online store</h3>
+        <p>A fully hosted standalone ecommerce website, domain name &amp; SSL included.</p>
+      </div>
+      <div class="get-card appear d2">
+        <div class="get-icon">
+          <img src="img/icons/designtools.svg" alt="design">
+        </div>
+        <h3>Professional design</h3>
+        <p>Switchable, mobile-friendly design with vibrant visuals that turn shoppers into buyers.</p>
+      </div>
+      <div class="get-card appear d3">
+        <div class="get-icon">
+          <img src="img/icons/shopping-bag.svg" alt="products">
+        </div>
+        <h3>Thousands of best-sellers</h3>
+        <p>Access to handpicked collections of the trendiest items. Add as many products as you like.</p>
+      </div>
+      <div class="get-card appear d4">
+        <div class="get-icon">
+          <img src="img/icons/card.svg" alt="payment">
+        </div>
+        <h3>Payment system</h3>
+        <p>Your store is fully ready to accept payments through credit cards, debit cards, PayPal, and more.</p>
+      </div>
+      <div class="get-card appear d5">
+        <div class="get-icon">
+          <img src="img/icons/profile-tick.svg" alt="manager">
+        </div>
+        <h3>Personal manager</h3>
+        <p>Your dedicated manager will guide you through all the steps of your business launch and growth.</p>
+      </div>
+      <div class="get-card appear d6">
+        <div class="get-icon">
+          <img src="img/icons/24-support.svg" alt="support">
+        </div>
+        <h3>24/7 tech support</h3>
+        <p>Feel free to contact our friendly support team whenever you have any technical issues.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:56px" class="appear">
+      <a href="https://sellvia.com/checkout/?product=custom&type_custom=free_basic_hosting" class="btn btn-filled" id="getCtaBtn">Get my free store</a>
+      <p style="margin-top:12px;font-size:13px;color:rgba(255,255,255,0.3)">Get started in less than 60 seconds • Cancel anytime</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ RATINGS (moved up for early social proof) ═══ -->
+<div class="ratings-sec">
+  <div class="sec-label" style="color:rgba(255,255,255,0.35);text-align:center;margin-bottom:24px">FEATURED ON:</div>
+  <div class="featured-marquee">
+    <div class="featured-strip">
+      <img src="img/featured/forbes.svg" alt="Forbes">
+      <img src="img/featured/entrepreneur.svg" alt="Entrepreneur">
+      <img src="img/featured/inc.svg" alt="Inc.">
+      <img src="img/featured/nbc.svg" alt="NBC">
+      <img src="img/featured/business-com.svg" alt="Business.com">
+      <img src="img/featured/fox-news.svg" alt="Fox News">
+      <img src="img/featured/forbes.svg" alt="Forbes">
+      <img src="img/featured/entrepreneur.svg" alt="Entrepreneur">
+      <img src="img/featured/inc.svg" alt="Inc.">
+      <img src="img/featured/nbc.svg" alt="NBC">
+      <img src="img/featured/business-com.svg" alt="Business.com">
+      <img src="img/featured/fox-news.svg" alt="Fox News">
+      <img src="img/featured/forbes.svg" alt="Forbes">
+      <img src="img/featured/entrepreneur.svg" alt="Entrepreneur">
+      <img src="img/featured/inc.svg" alt="Inc.">
+      <img src="img/featured/nbc.svg" alt="NBC">
+      <img src="img/featured/business-com.svg" alt="Business.com">
+      <img src="img/featured/fox-news.svg" alt="Fox News">
+      <img src="img/featured/forbes.svg" alt="Forbes">
+      <img src="img/featured/entrepreneur.svg" alt="Entrepreneur">
+      <img src="img/featured/inc.svg" alt="Inc.">
+      <img src="img/featured/nbc.svg" alt="NBC">
+      <img src="img/featured/business-com.svg" alt="Business.com">
+      <img src="img/featured/fox-news.svg" alt="Fox News">
+    </div>
+  </div>
+  <div class="ratings-inner">
+    <div class="rat-card appear d1"><img class="rat-logo" src="img/ratings/sitejabber.svg" alt="Sitejabber"><div class="rat-stars">★★★★★</div><div class="rat-score">4.8</div><div class="rat-count">824 reviews</div></div>
+    <div class="rat-card appear d2"><img class="rat-logo" src="img/ratings/trustpilot.svg" alt="Trustpilot"><div class="rat-stars">★★★★★</div><div class="rat-score">4.6</div><div class="rat-count">1,115 reviews</div></div>
+    <div class="rat-card appear d3"><img class="rat-logo" src="img/ratings/facebook.svg" alt="Facebook"><div class="rat-stars">★★★★★</div><div class="rat-score">96%</div><div class="rat-count">510 reviews</div></div>
+    <div class="rat-card appear d4"><img class="rat-logo" src="img/ratings/g2.svg" alt="G2"><div class="rat-stars">★★★★★</div><div class="rat-score">4.7</div><div class="rat-count">249 reviews</div></div>
+  </div>
+</div>
+
+<!-- ═══ AWARDS (moved up for early social proof) ═══ -->
+<section class="awards-sec">
+  <div class="sec-in">
+    <div class="appear">
+      <div class="sec-label">Recognition</div>
+      <h2 class="sec-title-xl on-light">Award-winning quality.</h2>
+      <p class="sec-body" style="max-width:520px;margin:0 auto">Here's just a part of the industry rewards our turnkey stores and ecommerce platform have achieved.</p>
+    </div>
+    <div class="awards-grid">
+      <div class="award-card appear d1">
+        <img class="award-logo" src="img/Awards/1_logo_m.webp" alt="Hermes Awards">
+        <h3>Hermes Awards</h3>
+        <p>Best IT Product 2025–2026</p>
+        <span class="award-medal gold">Gold Winner</span>
+      </div>
+      <div class="award-card appear d2">
+        <img class="award-logo" src="img/Awards/2_logo_m.webp?v=2" alt="MarCom Awards">
+        <h3>MarCom Awards</h3>
+        <p>Best Ecommerce Platform</p>
+        <span class="award-medal plat">Platinum Winner</span>
+      </div>
+      <div class="award-card appear d3">
+        <img class="award-logo" src="img/Awards/3_logo_m.webp" alt="dotCOMM Awards">
+        <h3>dotCOMM Awards</h3>
+        <p>Best Ecommerce Ecosystem</p>
+        <span class="award-medal gold">Gold Winner</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHAT WILL I SELL ═══ -->
+<section class="sell-sec" id="sell">
+  <div class="sec-in-wide">
+    <div class="appear" style="text-align:center">
+      <div class="sec-label" style="color:var(--c-amber)">Your product catalog</div>
+      <h2 class="sec-title-xl" style="color:#fff">What will I sell?</h2>
+      <p class="sec-body" style="color:rgba(255,255,255,0.6);max-width:500px;margin:0 auto">Your store comes pre-loaded with 100+ best-selling AI toolkits! Check some examples.</p>
+    </div>
+  </div>
+
+  <div class="wix-carousel appear d2">
+    <div class="wix-track">
+      <div class="wix-card"><img src="img/products/0-discover-your-next-big-business-idea.webp" alt="Discover Your Next Big Business Idea"></div>
+      <div class="wix-card"><img src="img/products/1-critical-thinking-amp-problem-solving-ebook.webp" alt="Critical Thinking & Problem Solving eBook"></div>
+      <div class="wix-card"><img src="img/products/2-5-days-to-unshakable-dating-confidence.webp" alt="5 Days to Unshakable Dating Confidence"></div>
+      <div class="wix-card"><img src="img/products/3-top-10-must-see-u-s-national-parks-fast-facts.webp" alt="Top 10 Must-See U.S. National Parks + Fast Facts"></div>
+      <div class="wix-card"><img src="img/products/4-first-time-parent-survival-guide.webp" alt="First-Time Parent Survival Guide"></div>
+      <div class="wix-card"><img src="img/products/5-sleep-reset-guided-audio-course-for-restful-nights.webp" alt="Sleep Reset: Guided Audio Course for Restful Nights"></div>
+      <div class="wix-card"><img src="img/products/6-pet-travel-essentials-checklist-for-safe-trips.webp" alt="Pet Travel Essentials Checklist for Safe Trips"></div>
+      <div class="wix-card"><img src="img/products/7-the-empowered-budgeting-toolkit.webp" alt="The Empowered Budgeting Toolkit"></div>
+      <div class="wix-card"><img src="img/products/8-healthy-meal-plan-amp-recipe-collection.webp" alt="Healthy Meal Plan & Recipe Collection"></div>
+      <div class="wix-card"><img src="img/products/9-step-by-step-career-development-guide.webp" alt="Step-by-Step Career Development Guide"></div>
+      <!-- Duplicate for seamless loop -->
+      <div class="wix-card"><img src="img/products/0-discover-your-next-big-business-idea.webp" alt="Discover Your Next Big Business Idea"></div>
+      <div class="wix-card"><img src="img/products/1-critical-thinking-amp-problem-solving-ebook.webp" alt="Critical Thinking & Problem Solving eBook"></div>
+      <div class="wix-card"><img src="img/products/2-5-days-to-unshakable-dating-confidence.webp" alt="5 Days to Unshakable Dating Confidence"></div>
+      <div class="wix-card"><img src="img/products/3-top-10-must-see-u-s-national-parks-fast-facts.webp" alt="Top 10 Must-See U.S. National Parks + Fast Facts"></div>
+      <div class="wix-card"><img src="img/products/4-first-time-parent-survival-guide.webp" alt="First-Time Parent Survival Guide"></div>
+      <div class="wix-card"><img src="img/products/5-sleep-reset-guided-audio-course-for-restful-nights.webp" alt="Sleep Reset: Guided Audio Course for Restful Nights"></div>
+      <div class="wix-card"><img src="img/products/6-pet-travel-essentials-checklist-for-safe-trips.webp" alt="Pet Travel Essentials Checklist for Safe Trips"></div>
+      <div class="wix-card"><img src="img/products/7-the-empowered-budgeting-toolkit.webp" alt="The Empowered Budgeting Toolkit"></div>
+      <div class="wix-card"><img src="img/products/8-healthy-meal-plan-amp-recipe-collection.webp" alt="Healthy Meal Plan & Recipe Collection"></div>
+      <div class="wix-card"><img src="img/products/9-step-by-step-career-development-guide.webp" alt="Step-by-Step Career Development Guide"></div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:48px;" class="appear">
+    <a href="https://sellvia.com/checkout/?product=custom&type_custom=free_basic_hosting" class="btn btn-filled">Get my free store</a>
+    <p style="margin-top:14px;font-size:12px;color:rgba(255,255,255,0.35)">All products are pre-loaded in your store – no extra cost</p>
+  </div>
+</section>
+
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="how-sec">
+  <div class="sec-in">
+    <div class="appear" style="text-align:center">
+      <div class="sec-label">How it works</div>
+      <h2 class="sec-title-xl on-light">From zero to sale<br>in 3 simple steps.</h2>
+      <p class="sec-body" style="max-width:540px;margin:0 auto">No experience, no tech skills, no inventory needed.</p>
+    </div>
+    <div class="how-steps">
+      <div class="how-step appear d1">
+        <div class="how-step-num">01</div>
+        <h3>We build your store</h3>
+        <p>Sign up free and we immediately set up a complete online store for you – loaded with digital products people actually buy. Your store is live in minutes, not months.</p>
+        <span class="how-step-tag">Done for you</span>
+      </div>
+      <div class="how-step appear d2">
+        <div class="how-step-num">02</div>
+        <h3>Turn on your ads</h3>
+        <p>With one click, your built-in ad system starts promoting your products. A free $40 ad coupon is included so your first campaign costs you nothing.</p>
+        <span class="how-step-tag">One click</span>
+      </div>
+      <div class="how-step appear d3">
+        <div class="how-step-num">03</div>
+        <h3>Get paid, keep 50–70%</h3>
+        <p>When a customer buys from your store, you keep 50–70% of every sale as your profit. Products deliver instantly – no shipping, no hassle from your side.</p>
+        <span class="how-step-tag">Your profit</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHY ═══ -->
+<section class="why-sec" id="why">
+  <div class="sec-in">
+    <div class="appear" style="text-align:center">
+      <div class="sec-label">Why thousands choose us</div>
+      <h2 class="sec-title-xl on-light">Everything you need.<br>Nothing you don't.</h2>
+      <p class="sec-body" style="max-width:540px;margin:0 auto">Your business launch is organized by us – no inventory, no upfront costs, no shipping headaches.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card appear d1">
+        <div class="why-icon">
+          <img src="img/icons/shield-tick.svg" alt="check">
+        </div>
+        <h3>100% hassle-free</h3>
+        <p>We build, load, and launch your store for you. You focus on earning – we take care of the rest.</p>
+      </div>
+      <div class="why-card appear d2">
+        <div class="why-icon">
+          <img src="img/icons/user.svg" alt="user">
+        </div>
+        <h3>Start with zero experience</h3>
+        <p>Your store will bring profits on autopilot and the management is totally beginner friendly.</p>
+      </div>
+      <div class="why-card appear d3">
+        <div class="why-icon">
+          <img src="img/icons/trend-up.svg" alt="trend">
+        </div>
+        <h3>Financial freedom</h3>
+        <p>You get a stable source of income and a brilliant opportunity to change your life for the better.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 <!-- ═══ STORE DESIGNS MARQUEE ═══ -->
 <style>
