@@ -1888,33 +1888,47 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   display: flex;
   align-items: center;
   justify-content: center;
+  transform: translateX(-60px);
+}
+@media (max-width: 768px) {
+  .freebasic-section .pv-phone-wrap { transform: translateX(0); }
 }
 .freebasic-section .pv-phone {
   position: relative;
   width: 280px;
   height: 604px;
-  background: #000;
-  border-radius: 48px;
-  padding: 4px;
-  box-shadow: 0 40px 100px rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.06);
+  background: transparent;
+  border-radius: 18px;
+  padding: 0;
+  box-shadow: 0 40px 100px rgba(0,0,0,.18);
   overflow: hidden;
+  z-index: 2;
 }
-.freebasic-section .pv-phone-notch {
-  position: absolute; top: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 80px; height: 22px;
-  background: #0a0a0f;
-  border-radius: 0 0 16px 16px;
-  z-index: 10;
-  border: 1px solid rgba(255,255,255,.08);
-  border-top: none;
+@keyframes pvScreenFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
 }
 .freebasic-section .pv-phone-screen {
   width: 100%; height: 100%;
-  border-radius: 44px;
+  border-radius: 18px;
   overflow: hidden;
   position: relative;
   background: #ffffff;     /* Shopify-style white store page */
+}
+/* Phone-screen mock screenshot with smooth auto-scroll loop */
+.freebasic-section .pv-screen-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* Image native ratio 1535:3853 → at 280px wide ≈ 703px tall.
+     Phone screen is 604px → scroll range ≈ -100px. */
+  animation: pvScreenScroll 18s ease-in-out 0.6s infinite;
+  will-change: transform;
+}
+@keyframes pvScreenScroll {
+  0%,   8%   { transform: translateY(0); }                  /* hold at top */
+  50%, 58%   { transform: translateY(calc(-100% + 604px)); } /* hold at bottom */
+  100%       { transform: translateY(0); }                  /* back to top */
 }
 /* Nav bar — white */
 .freebasic-section .pv-store-nav-bar {
@@ -2048,6 +2062,46 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   box-shadow: 0 8px 28px rgba(0,0,0,.10), 0 1px 0 rgba(255,255,255,.6) inset;
   overflow: hidden;
 }
+/* Temporarily hidden — Monthly revenue / Store rating / Orders this month.
+   Remove this rule to bring the floating cards back. */
+.freebasic-section .pv-fc-1,
+.freebasic-section .pv-fc-2,
+.freebasic-section .pv-fc-3 { display: none; }
+
+/* Stat-card overlays (sit on top of the phone & backdrop) */
+.freebasic-section .pv-stat {
+  position: absolute;
+  z-index: 5;
+  display: block;
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 18px 40px rgba(0,0,0,.16));
+}
+.freebasic-section .pv-stat-new {
+  top: 6%;
+  right: -140px;
+  width: 216px;          /* −10% from 240 */
+  border-radius: 30px;
+  animation: pvStatFloat1 5s ease-in-out 0s infinite;
+}
+.freebasic-section .pv-stat-today {
+  /* Sits on the left, in the slot previously occupied by 6184 backdrop */
+  top: calc(6% + 100px);
+  left: -215px;
+  width: 253px;          /* +15% from 220 */
+  border-radius: 30px;
+  animation: pvStatFloat2 5.5s ease-in-out 1.6s infinite;
+}
+@keyframes pvStatFloat1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+@keyframes pvStatFloat2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+@media (max-width: 1100px) {
+  .freebasic-section .pv-stat-new   { right: -70px; width: 198px; }
+  .freebasic-section .pv-stat-today { left: -160px; width: 230px; }
+}
+@media (max-width: 768px) {
+  .freebasic-section .pv-stat-new   { right: -40px; width: 180px; }
+  .freebasic-section .pv-stat-today { left: -50px;  width: 200px; top: calc(6% + 60px); }
+}
 .freebasic-section .pv-float-card-top {
   display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
 }
@@ -2105,6 +2159,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="bonus-right pv-stage" aria-label="Store visual">
       <div class="pv-phone-wrap">
 
+        <!-- Stat overlays on top of phone -->
+        <img class="pv-stat pv-stat-new"   src="img/freebasic/New%20order.webp"      alt="New order received">
+        <img class="pv-stat pv-stat-today" src="img/freebasic/Today's%20Orders.webp" alt="Today's orders summary">
+
         <!-- Top-right floating card: revenue (Figma: dollar-circle) -->
         <div class="pv-float-card pv-fc-1">
           <div class="pv-float-card-top">
@@ -2155,109 +2213,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="pv-float-card-label">Orders this month</div>
         </div>
 
-        <!-- Top-left floating card: payouts (Figma: card-tick) -->
-        <div class="pv-float-card pv-fc-4">
-          <div class="pv-float-card-top">
-            <span class="pv-float-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M2 8.5H13.5" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M6 16.5H8" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M10.5 16.5H14.5" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M22 11.03V16.11C22 19.62 21.11 20.5 17.56 20.5H6.44C2.89 20.5 2 19.62 2 16.11V7.89C2 4.38 2.89 3.5 6.44 3.5H13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M16.5 6L18 7.5L22 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-            <span class="pv-float-card-badge">Weekly</span>
-          </div>
-          <div class="pv-float-card-val">$1,312</div>
-          <div class="pv-float-card-label">Payout sent</div>
-        </div>
-
         <!-- Phone -->
         <div class="pv-phone">
-          <div class="pv-phone-notch"></div>
           <div class="pv-phone-screen">
-
-            <!-- Nav bar (Figma: vuesax/linear menu + shopping-bag) -->
-            <div class="pv-store-nav-bar">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M3 7H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M3 12H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M3 17H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
-              <div class="pv-brand">mystore<span>.</span></div>
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M8.4 6.5H15.6C19 6.5 19.34 8.09 19.57 10.03L20.47 17.53C20.76 19.99 20 22 16.5 22H7.51C4 22 3.24 19.99 3.54 17.53L4.44 10.03C4.66 8.09 5 6.5 8.4 6.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M8 8V4.5C8 3 9 2 10.5 2H13.5C15 2 16 3 16 4.5V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M20.41 17.03H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-
-            <!-- Hero banner (main product card) — image on top, white body below -->
-            <div class="pv-store-hero">
-              <div class="pv-hero-img">
-                <div class="pv-hero-bg"></div>
-                <div class="pv-hero-badge">
-                  <div class="pv-hero-badge-dot"></div>
-                  <div class="pv-hero-badge-txt">Best Seller</div>
-                </div>
-              </div>
-              <div class="pv-hero-body">
-                <div>
-                  <div class="pv-hero-name">Resume Factory Pro</div>
-                  <div class="pv-hero-prices">
-                    <div class="pv-hero-price">$59</div>
-                    <div class="pv-hero-price-old">$89</div>
-                    <div class="pv-hero-disc">−34%</div>
-                  </div>
-                </div>
-                <div class="pv-hero-cta">Shop Now</div>
-              </div>
-            </div>
-
-            <!-- Product list -->
-            <div class="pv-store-list">
-              <div class="pv-list-label">Popular</div>
-              <div class="pv-store-items">
-                <div class="pv-store-item">
-                  <div class="pv-item-thumb pv-thumb-1"></div>
-                  <div class="pv-store-item-info">
-                    <div class="pv-item-name">Puppy Starter</div>
-                    <div class="pv-item-sub">Training guide</div>
-                  </div>
-                  <div class="pv-item-price">$9</div>
-                </div>
-                <div class="pv-store-item">
-                  <div class="pv-item-thumb pv-thumb-2"></div>
-                  <div class="pv-store-item-info">
-                    <div class="pv-item-name">Body Reset</div>
-                    <div class="pv-item-sub">30-day plan</div>
-                  </div>
-                  <div class="pv-item-price">$8</div>
-                </div>
-                <div class="pv-store-item">
-                  <div class="pv-item-thumb pv-thumb-3"></div>
-                  <div class="pv-store-item-info">
-                    <div class="pv-item-name">Sleep System</div>
-                    <div class="pv-item-sub">Science-based</div>
-                  </div>
-                  <div class="pv-item-price">$29</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- New Arrival promo -->
-            <div class="pv-new-arrival">
-              <div>
-                <div class="pv-new-label">New Arrival</div>
-                <div class="pv-new-name">Career Reboot System</div>
-              </div>
-              <div class="pv-new-right">
-                <div class="pv-new-price">$8</div>
-                <div class="pv-new-just">Just added</div>
-              </div>
-            </div>
-
+            <img class="pv-screen-img" src="img/freebasic/screen.webp" alt="Mobile store screen">
           </div>
         </div>
 
