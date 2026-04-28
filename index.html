@@ -591,6 +591,26 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   font-style: normal;
   color: var(--c-amber);
 }
+/* Amazon "smile" arrow under the word "Amazon" — matches reference proportions
+   (arrow ≈ 82% of word width, native SVG aspect 155:36).
+   padding-bottom on the inline-block span reserves space for the arrow
+   so it doesn't collide with the next line. */
+.hero-h1 .h1-amz {
+  position: relative;
+  display: inline-block;
+  padding-top: calc(0.4em - 2px);
+  padding-bottom: calc(0.4em - 2px);
+}
+.hero-h1 .h1-amz::after {
+  content: '';
+  position: absolute;
+  left: calc(22.5% - 1.5px);
+  right: calc(22.5% + 6.5px);
+  bottom: 0;
+  aspect-ratio: 155 / 36;
+  background: url('img/Hero/arrow.svg') no-repeat center bottom / contain;
+  pointer-events: none;
+}
 .hero-sub {
   font-size: clamp(19px, 2.5vw, 24px);
   font-weight: 400;
@@ -1792,8 +1812,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
   <div class="hero-inner">
     <p class="hero-eyebrow"><span class="eyebrow-l1">Free for 14 days</span><span class="eyebrow-sep"> · </span><span class="eyebrow-l2">No experience needed</span></p>
-    <h1 class="hero-h1">Free store today.<br><em>Amazon Seller Kit</em><br>included.</h1>
-    <p class="hero-sub">Hot-selling products, a ready-to-sell storefront, and the toolkit top sellers use to launch and scale on Amazon.</p>
+    <h1 class="hero-h1">Your free store +<br><em><span class="h1-amz">Amazon</span> Seller Kit</em>.<br>Claim both today.</h1>
+    <p class="hero-sub">A turnkey ecommerce site loaded with 100+ products — plus everything you need to start selling on Amazon. Two businesses, one free signup.</p>
     <div class="hero-actions">
       <a href="https://sellvia.com/checkout/?product=custom&type_custom=free_basic_hosting" class="btn btn-filled btn-pulse">Get my free store</a>
     </div>
@@ -2224,7 +2244,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- Phone -->
         <div class="pv-phone">
           <div class="pv-phone-screen">
-            <img class="pv-screen-img" src="img/freebasic/screen.webp" alt="Mobile store screen">
+            <img class="pv-screen-img" src="img/freebasic/screen2.webp" alt="Mobile store screen">
           </div>
         </div>
 
