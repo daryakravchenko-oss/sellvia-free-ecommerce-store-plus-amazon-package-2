@@ -397,20 +397,22 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   padding: 18px 20px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
 }
-.hf-card-snap { width: 180px; }
-.hf-snap-head {
+.hf-card-snap { width: 220px; }
+.hf-snap-row {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 8px;
+  gap: 12px;
+  margin-bottom: 12px;
 }
+.hf-snap-info { flex: 1; min-width: 0; }
 .hf-dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: #22c55e;
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.85);
   animation: hf-pulse 1.6s ease-in-out infinite;
+  flex-shrink: 0;
 }
 @keyframes hf-pulse {
   0%, 100% { opacity: 1;   transform: scale(1); }
@@ -424,24 +426,22 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   color: rgba(255, 255, 255, 0.7);
 }
 .hf-snap-val {
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 800;
   color: #fff;
   letter-spacing: -0.02em;
-  line-height: 1;
+  line-height: 1.1;
   text-align: left;
-  margin-left: -2px;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 .hf-snap-sub {
   font-size: 12px;
   color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 10px;
   text-align: left;
-  margin-left: -2px;
+  line-height: 1.35;
 }
 .hf-spark {
-  height: 30px;
+  height: 40px;
   opacity: 0.9;
   overflow: visible;
 }
@@ -1739,18 +1739,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <img class="hp-amz hp-amz-mr1" src="img/Hero/Amazon_round.webp" alt="">
   </div>
 
-  <!-- LEFT: glass card with mini stats snapshot -->
-  <div class="hero-float hero-float-left" aria-hidden="true">
+  <!-- LEFT: glass card — live social proof (new stores started today) -->
+  <div class="hero-float hero-float-left">
     <div class="hf-card hf-card-snap">
-      <div class="hf-snap-head">
+      <div class="hf-snap-row">
         <span class="hf-dot"></span>
-        <span class="hf-snap-lbl">Live</span>
+        <div class="hf-snap-info">
+          <div class="hf-snap-val"><span id="heroLiveCount">847</span> people</div>
+          <div class="hf-snap-sub">started their store today</div>
+        </div>
       </div>
-      <div class="hf-snap-val">247</div>
-      <div class="hf-snap-sub">shoppers today</div>
       <div class="hf-spark">
-        <svg viewBox="0 0 100 30" preserveAspectRatio="none">
-          <polyline points="0,22 12,18 24,20 36,14 48,16 60,8 72,10 84,4 100,6" fill="none" stroke="#F8A54D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <svg viewBox="0 0 100 40" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="hfSparkGrad" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%"  stop-color="#F8A54D"/>
+              <stop offset="100%" stop-color="#22c55e"/>
+            </linearGradient>
+          </defs>
+          <polyline points="0,37 12,35 24,33 36,29 48,24 60,17 72,10 84,5 100,2" fill="none" stroke="url(#hfSparkGrad)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
     </div>
@@ -2068,6 +2075,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 .freebasic-section .pv-fc-2,
 .freebasic-section .pv-fc-3 { display: none; }
 
+
 /* Stat-card overlays (sit on top of the phone & backdrop) */
 .freebasic-section .pv-stat {
   position: absolute;
@@ -2225,9 +2233,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- RIGHT (text) -->
     <div class="bonus-left">
-      <span class="bonus-pill">YOUR STORE + AMAZON</span>
-      <h2 class="bonus-heading">Your own store.<br>Plus the world's #1 marketplace.</h2>
-      <p class="bonus-sub">Two ways to earn from one signup — your branded ecommerce website plus a door to 300M+ Amazon shoppers. Same effort, double the opportunity.</p>
+      <span class="bonus-pill">STEP 1 — YOUR STORE</span>
+      <h2 class="bonus-heading">Your own online store,<br>ready to sell.</h2>
+      <p class="bonus-sub">A complete done-for-you online store — custom domain, mobile-ready design, payment system, and 100+ best-selling products already inside. Yours from day one, no setup needed.</p>
       <ul class="bullets">
         <li class="bullet-item">
           <svg class="bullet-check" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -2239,7 +2247,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <svg class="bullet-check" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M7.75 12L10.58 14.83L16.25 9.17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <span class="bullet-text">Access to 300M+ Amazon shoppers</span>
+          <span class="bullet-text">Personal manager to guide your launch</span>
         </li>
         <li class="bullet-item">
           <svg class="bullet-check" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -2571,7 +2579,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- LEFT -->
     <div class="bonus-left">
-      <span class="bonus-pill">BONUS</span>
+      <span class="bonus-pill">STEP 2 — AMAZON KIT</span>
       <h2 class="bonus-heading">Get an Amazon<br>Seller Kit for FREE</h2>
       <p class="bonus-sub">When you act here and now!</p>
       <ul class="bullets" id="bulletList">
@@ -3346,12 +3354,16 @@ document.querySelectorAll('.faq-q').forEach(btn => {
 });
 
 
-// ── FAQ SOCIAL PROOF ──
+// ── LIVE SOCIAL PROOF (hero glass card + FAQ — same number on both) ──
 ;(function() {
-  const el = document.getElementById('faqProof');
-  if (!el) return;
   const base = 700 + Math.floor(Math.random() * 400);
-  el.textContent = base.toLocaleString('en-US') + ' people started their store today';
+  const num  = base.toLocaleString('en-US');
+
+  const heroEl = document.getElementById('heroLiveCount');
+  if (heroEl) heroEl.textContent = num;
+
+  const faqEl = document.getElementById('faqProof');
+  if (faqEl) faqEl.textContent = num + ' people started their store today';
 })();
 
 // ── MARQUEE DRAG-TO-SCROLL (JS-driven) ──
