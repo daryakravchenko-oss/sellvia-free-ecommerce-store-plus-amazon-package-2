@@ -1923,7 +1923,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 .freebasic-section .pv-phone {
   position: relative;
   width: 280px;
-  height: 604px;
+  height: var(--pv-phone-h, 604px);
   background: transparent;
   border-radius: 18px;
   padding: 0;
@@ -1953,9 +1953,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   will-change: transform;
 }
 @keyframes pvScreenScroll {
-  0%,   8%   { transform: translateY(0); }                  /* hold at top */
-  50%, 58%   { transform: translateY(calc(-100% + 604px)); } /* hold at bottom */
-  100%       { transform: translateY(0); }                  /* back to top */
+  0%,   8%   { transform: translateY(0); }                                    /* hold at top */
+  50%, 58%   { transform: translateY(calc(-100% + var(--pv-phone-h, 604px))); } /* hold at bottom */
+  100%       { transform: translateY(0); }                                    /* back to top */
 }
 /* Nav bar — white */
 .freebasic-section .pv-store-nav-bar {
@@ -2127,8 +2127,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   .freebasic-section .pv-stat-today { left: -160px; width: 230px; }
 }
 @media (max-width: 768px) {
-  .freebasic-section .pv-stat-new   { right: -40px; width: 180px; }
-  .freebasic-section .pv-stat-today { left: -50px;  width: 200px; top: calc(6% + 60px); }
+  .freebasic-section .pv-stat-new   { right: -40px; width: 180px; top: calc(6% + 100px); }
+  .freebasic-section .pv-stat-today { left: -45px;  width: 200px; top: calc(6% + 240px); }
+  /* Phone is 200px shorter on mobile — keyframe distance auto-adapts via --pv-phone-h */
+  .freebasic-section .pv-phone        { --pv-phone-h: 404px; }
+  .freebasic-section .pv-screen-img   { --pv-phone-h: 404px; }
+  /* Tighten the stage to the actual content (phone + overflowing cards) */
+  .freebasic-section .bonus-right.pv-stage { min-height: 510px; }
 }
 .freebasic-section .pv-float-card-top {
   display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
@@ -2189,7 +2194,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <!-- Stat overlays on top of phone -->
         <img class="pv-stat pv-stat-new"   src="img/freebasic/New%20order.webp"      alt="New order received">
-        <img class="pv-stat pv-stat-today" src="img/freebasic/Today's%20Orders.webp" alt="Today's orders summary">
+        <picture>
+          <source media="(max-width: 768px)" srcset="img/freebasic/Today's%20Orders_m.webp">
+          <img class="pv-stat pv-stat-today" src="img/freebasic/Today's%20Orders.webp" alt="Today's orders summary">
+        </picture>
 
         <!-- Top-right floating card: revenue (Figma: dollar-circle) -->
         <div class="pv-float-card pv-fc-1">
