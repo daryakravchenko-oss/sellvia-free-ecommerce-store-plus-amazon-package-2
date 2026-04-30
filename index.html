@@ -187,8 +187,10 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   position: relative;
   overflow: hidden;
   text-align: center;
-  padding: 48px 24px 44px;
+  padding: 120px 24px;
 }
+@media(max-width:1200px) { .hero { padding: 100px 24px; } }
+@media(max-width:860px)  { .hero { padding: 72px 24px; } }
 /* Animated edge glows — very blurred orange blobs at left & right edges
    that gently pulse in/out opacity; center stays dark so the H1 reads clean */
 .hero-glows {
@@ -270,7 +272,7 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   width: 15%;
   aspect-ratio: 1 / 1;
   left: 20%;
-  top: calc(38% - 30px);
+  top: calc(38% - 330px);
   object-fit: contain;
   opacity: 0;
   /* L1 — left portrait, shoulder: in 1s, out 3s */
@@ -298,26 +300,6 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 }
 /* Second-appearance badges near each face. Timing: first wave L1+R2 (1s apart),
    second wave L2+R1 (1s apart). */
-.hp-amz-2 {
-  /* L2 default — left portrait, above-right of head: in 6s, out 8s */
-  animation:
-    amz-in 0.6s ease 6s both,
-    float-card 6s ease-in-out 6s infinite,
-    amz-out 0.6s ease 8s forwards;
-}
-.hero-portrait-left .hp-amz-2 {
-  left: calc(55% + 50px);
-  top: calc(4% - 10px);
-}
-.hero-portrait-right .hp-amz-2 {
-  left: calc(30% - 50px);
-  top: calc(4% + 10px);
-  /* R2 — right portrait, above-left of head: in 2s (1s after L1), out 4s */
-  animation:
-    amz-in 0.6s ease 2s both,
-    float-card 6s ease-in-out 2s infinite,
-    amz-out 0.6s ease 4s forwards;
-}
 .hero-portrait-left {
   left: calc(3% - 50px);
   top: calc(12% - 50px);
@@ -344,8 +326,8 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   color: #fff;
 }
 .hero-float-left {
-  left: calc(3% + 330px);
-  top: calc(38% + 100px);
+  left: calc(3% + 300px);
+  top: calc(38% + 130px);
   opacity: 0;
   animation:
     float-card 7s ease-in-out infinite,
@@ -383,8 +365,13 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   .hero-portrait-right { width: 540px; }
   .hero-portrait-left  { left:  -40px; }
   .hero-portrait-right { right: -40px; }
-  .hero-float-left     { left:  calc(3% + 140px); }
+  .hero-float-left     { left:  calc(3% + 110px); }
   .hero-float-right    { right: calc(5% + 60px); }
+}
+@media (max-width: 1440px) {
+  /* Both float cards 50px higher on this width */
+  .hero-float-left  { top: calc(38% + 80px); }
+  .hero-float-right { transform: translateY(calc(-50% + 80px + var(--fade-y))); }
 }
 
 /* Matte glass card — common base for all hero-float cards */
@@ -508,6 +495,7 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 /* Mobile-mirror badges (R1, R2 on the man's portrait) — hidden by default,
    only shown inside the ≤600px media query below */
 .hp-amz-mr1, .hp-amz-mr2 { display: none; }
+.hp-amz-mr2 { top: calc(38% - 450px); }   /* +120px above .hp-amz base */
 
 /* ── Mobile hero (≤600px) ──
    Show only the man's portrait — centered and much larger so it forms the
@@ -525,15 +513,14 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   /* 40% black overlay on top of the man's photo (badges keep full brightness) */
   .hero-portrait-left > img:not(.hp-amz) { filter: brightness(0.6); }
 
-  /* On phone — only L1 stays. L2/R1/R2 are hidden. */
-  .hero-portrait-left .hp-amz-2,
+  /* On phone — only L1 stays. Mobile-mirror badges hidden. */
   .hero-portrait-left .hp-amz-mr1,
   .hero-portrait-left .hp-amz-mr2 { display: none; }
 
   /* L1 — appears once every 4s, near man's shoulder */
-  .hero-portrait-left > .hp-amz:not(.hp-amz-2):not(.hp-amz-mr1):not(.hp-amz-mr2) {
+  .hero-portrait-left > .hp-amz:not(.hp-amz-mr1):not(.hp-amz-mr2) {
     left: 24%;
-    top: 28%;
+    top: calc(28% - 300px);
     width: 6%;
     animation: amz-loop 4s ease-in-out infinite;
   }
@@ -573,7 +560,7 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   color: var(--c-amber);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  margin-bottom: 24px;
+  margin-bottom: 34px;
   opacity: 0;
   animation: fadeUp 0.8s var(--ease-out) 0.2s forwards;
 }
@@ -582,7 +569,7 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   font-weight: 700;
   color: #fff;
   letter-spacing: -0.04em;
-  line-height: 1.02;
+  line-height: 1.035;
   margin-bottom: 24px;
   opacity: 0;
   animation: fadeUp 0.9s var(--ease-out) 0.35s forwards;
@@ -593,12 +580,11 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 }
 /* Amazon "smile" arrow under the word "Amazon" — matches reference proportions
    (arrow ≈ 82% of word width, native SVG aspect 155:36).
-   padding-bottom on the inline-block span reserves space for the arrow
-   so it doesn't collide with the next line. */
+   padding-bottom reserves space below the line so the arrow doesn't collide
+   with the sub-paragraph that follows the H1. */
 .hero-h1 .h1-amz {
   position: relative;
   display: inline-block;
-  padding-top: calc(0.4em - 2px);
   padding-bottom: calc(0.4em - 2px);
 }
 .hero-h1 .h1-amz::after {
@@ -617,7 +603,7 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   color: rgba(255,255,255,0.75);
   line-height: 1.5;
   max-width: 620px;
-  margin: 0 auto 40px;
+  margin: 0 auto 50px;
   letter-spacing: -0.01em;
   opacity: 0;
   animation: fadeUp 0.9s var(--ease-out) 0.5s forwards;
@@ -627,15 +613,18 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   gap: 14px;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: wrap;
   opacity: 0;
   animation: fadeUp 0.9s var(--ease-out) 0.65s forwards;
   width: 100%;
 }
+@media (max-width: 760px) {
+  .hero-actions { flex-direction: column; }
+}
 @media(max-width:600px) {
   .hero { padding: 56px 16px; }
-  .hero-h1 { font-size: clamp(36px, 10vw, 52px); }
+  .hero-h1 { font-size: clamp(40px, 11vw, 58px); }
   .hero-inner { width: 100%; align-items: center; text-align: center; }
   .hero-actions { padding: 0 8px; }
   /* Eyebrow: break "Free for 14 days · No experience needed" into 2 lines */
@@ -687,6 +676,17 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 @keyframes ctaPulse { 0%,100%{box-shadow:0 0 0 0 rgba(245,166,35,0.4)} 50%{box-shadow:0 0 0 12px rgba(245,166,35,0)} }
 .btn-outline-w { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,0.5); }
 .btn-outline-w:hover { border-color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.08); }
+/* Hero secondary CTA — transparent w/ white text, border turns amber on hover */
+.btn-outline-amber {
+  background: transparent;
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.4);
+  width: 358px;
+  max-width: 100%;
+  height: 60px;
+  font-size: 19px;
+}
+.btn-outline-amber:hover { border-color: #f5a623; }
 .btn-text-amber { background: none; color: var(--c-amber); font-size: 17px; font-weight: 400; padding: 0; height: auto; }
 .btn-text-amber:hover { opacity: 0.75; }
 .btn-text-amber::after { content: ' ›'; }
@@ -1752,9 +1752,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="hero-portrait hero-portrait-left" aria-hidden="true">
     <img src="img/Hero/1_man.webp" alt="" width="1400" height="1044">
     <img class="hp-amz" src="img/Hero/Amazon_round.webp" alt="" width="636" height="636">
-    <img class="hp-amz hp-amz-2" src="img/Hero/Amazon_round.webp" alt="" width="636" height="636">
-    <!-- Mobile-only mirrors of R2 / R1 (woman's portrait is hidden on phone, so its badges
-         are recreated here so the same 4-badge timing pattern still plays) -->
+    <!-- Mobile-only mirrors (woman's portrait hidden on phone) -->
     <img class="hp-amz hp-amz-mr2" src="img/Hero/Amazon_round.webp" alt="" width="636" height="636">
     <img class="hp-amz hp-amz-mr1" src="img/Hero/Amazon_round.webp" alt="" width="636" height="636">
   </div>
@@ -1787,7 +1785,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="hero-portrait hero-portrait-right" aria-hidden="true">
     <img src="img/Hero/1_woman.webp" alt="" width="1400" height="1044">
     <img class="hp-amz hp-amz-right" src="img/Hero/Amazon_round.webp" alt="" width="636" height="636">
-    <img class="hp-amz hp-amz-2" src="img/Hero/Amazon_round.webp" alt="" width="636" height="636">
   </div>
 
   <!-- RIGHT: dashboard card with chart -->
@@ -1812,10 +1809,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
   <div class="hero-inner">
     <p class="hero-eyebrow"><span class="eyebrow-l1">Free for 14 days</span><span class="eyebrow-sep"> · </span><span class="eyebrow-l2">No experience needed</span></p>
-    <h1 class="hero-h1">Your free store +<br><em><span class="h1-amz">Amazon</span> Seller Kit</em>.<br>Claim both today.</h1>
+    <h1 class="hero-h1">Your free store +<br><em><span class="h1-amz">Amazon</span> Seller Kit</em>.</h1>
     <p class="hero-sub">A turnkey ecommerce site loaded with 100+ products — plus everything you need to start selling on Amazon. Two businesses, one free signup.</p>
     <div class="hero-actions">
-      <a href="https://sellvia.com/checkout/?product=custom&type_custom=free_basic_hosting" class="btn btn-filled btn-pulse">Get my free store</a>
+      <a href="https://sellvia.com/checkout/?product=custom&type_custom=free_basic_hosting" class="btn btn-filled">Get my free store + Amazon Kit</a>
+      <button type="button" onclick="SellviaChat.open()" class="btn btn-outline-amber">Get free consultation</button>
     </div>
     <p class="hero-fine">Get started in less than 60 seconds • Cancel anytime</p>
   </div>
@@ -2262,7 +2260,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- RIGHT (text) -->
     <div class="bonus-left">
       <span class="bonus-pill">STEP 1 — YOUR STORE</span>
-      <h2 class="bonus-heading">Your own online store,<br>ready to sell.</h2>
+      <h2 class="bonus-heading">Your own ecommerce site,<br>ready to sell.</h2>
       <p class="bonus-sub">A complete done-for-you online store — custom domain, mobile-ready design, payment system, and 100+ best-selling products already inside. Yours from day one, no setup needed.</p>
       <ul class="bullets">
         <li class="bullet-item">
@@ -3259,7 +3257,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- ═══ STICKY CTA (all screens) ═══ -->
 <div class="sticky-cta" id="stickyCta">
-  <a href="https://sellvia.com/checkout/?product=custom&type_custom=free_basic_hosting">Get my free store</a>
+  <a href="https://sellvia.com/checkout/?product=custom&type_custom=free_basic_hosting">Get my free store + Amazon Kit</a>
 </div>
 
 
